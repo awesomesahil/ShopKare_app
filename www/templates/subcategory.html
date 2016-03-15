@@ -1,0 +1,72 @@
+<ion-view view-title="{{MainCategory}}">
+        <ion-content has-header="true" overflow-scrolling="true">
+<!--         <ion-content has-header="true" style="background-image:url('img/white-wood.jpg');"> -->
+
+  <center><b><span style="font-size:1.2em;">Popular </span><span style="font-size:1.2em; color:purple;">Categories</span></b></center>
+  <ion-scroll direction="x" style="height:150px; white-space: nowrap;  width: 100vw;"  scrollbar-x="true">
+	<span class="inline" ng-click="viewSubCategoryProducts('{{subcategory}}')" ng-repeat="subcategory in subcategories">
+	<img ng-src="img/products/grocery/{{subcategory}}.jpg" style="height:115px; border: 2px solid #73AD21; width:100px; border-radius: 15px;" class="block">
+	{{subcategory}}
+       &nbsp;
+       </span>
+    </ion-scroll>
+  <hr>
+  <center><b><span style="font-size:1.2em;">Trending </span><span style="font-size:1.2em; color:purple;">Products</span> </b></center>
+  <ion-scroll direction="x" style="height:270px; white-space: nowrap;  width: 100vw;" scrollbar-x="true">
+	<span class="inline" style=" border-right: thin dashed grey; padding:1px;" ng-repeat="deal in deals">
+	<div>Coke Can</div><br>
+	<img ng-src="img/products/Red.jpg" style="height:150px;" class="block">
+	<div class="row" style="margin:0;">
+		    <div class="col" style="">
+		      <select>
+		      <option value="volvo">1 Liter</option>
+		      <option value="saab">500 ML</option>
+		      <option value="opel">250 ML</option>
+		    </select>
+		      
+		     </div>
+		    <div class="col text-right" style="">
+		      <font style="font-size:1.0em; color:purple;">
+		      Rs 110
+		      </font>
+		      
+		    </div>
+	 </div>	
+
+	      <button class="button button-dark button-small button-full" style="border-radius: 29px; margin:0; padding:0;">Add to Cart
+		      </button>
+       &nbsp;&nbsp;
+       </span>
+
+    </ion-scroll>
+    <hr>
+    
+  <center><b><span style="font-size:1.2em;">New </span><span style="font-size:1.2em; color:purple;">Releases</span> </b></center>
+  <ion-scroll direction="x" style="height:270px; white-space: nowrap;  width: 100vw;"  scrollbar-x="true">
+	<span class="inline" style=" border-right: thin dashed grey; padding:1px;" ui-sref="app.product" ng-repeat="deal in deals">
+	<div>Coke Can</div><br>
+	<img ng-src="img/products/coke.jpg" style="height:150px;" class="block">
+	<div class="row" style="margin:0;">
+		    <div class="col" style="">
+		      <select>
+		      <option value="volvo">1 Liter</option>
+		      <option value="saab">500 ML</option>
+		      <option value="opel">250 ML</option>
+		    </select>
+		      
+		     </div>
+		    <div class="col text-right" style="">
+		      <font style="font-size:1.0em; color:purple;">
+		      Rs 110
+		      </font>
+		      
+		    </div>
+	 </div>	
+	      <button class="button button-dark button-small button-full" style="border-radius: 29px; margin:0; padding:0;">Add to Cart
+		      </button>
+       &nbsp;&nbsp;
+       </span>
+
+    </ion-scroll>
+  </ion-content>
+</ion-view>

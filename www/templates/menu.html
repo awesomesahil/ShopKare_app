@@ -1,0 +1,132 @@
+<ion-side-menus enable-menu-with-back-views="true">
+  <ion-side-menu-content>
+     <ion-nav-bar class="bar-dark">
+      <ion-nav-buttons side="left">
+        <button class="button button-icon ion-navicon" menu-toggle="left">
+        </button>
+      </ion-nav-buttons>
+      <ion-nav-back-button class="button-clear">
+<i class="ion-arrow-left-c"></i>Back</ion-nav-back-button>
+
+      <ion-nav-buttons side="right">
+        <button class="button button-icon button-clear ion-search">
+        </button>
+        <button class="button button-icon button-clear ion-android-cart" menu-toggle="right"></button>
+      </ion-nav-buttons>
+    </ion-nav-bar>
+    <ion-nav-view name="menuContent"></ion-nav-view>
+  </ion-side-menu-content>
+
+  <ion-side-menu side="left">
+    <ion-content>
+	<div class="item item-body">
+	  <img src="img/logo.jpg" class="full-image">
+	</div>
+      <div class="list">
+        <div class="item item-divider">
+        </div>
+        <a class="item item-icon-left" ui-sref="app.home.grocery" menu-close>
+	<i class="icon ion-home"></i>
+	Home
+        </a>
+        <a class="item item-icon-left" href="#/home" menu-close ng-hide="isLoggedIn">
+	<i class="icon ion-log-in"></i>
+	Log In
+        </a>
+        <a class="item item-icon-left" href="#/home" menu-close ng-hide='isLoggedIn'>
+	<i class="icon ion-compose"></i>
+	Sign Up
+        </a>
+        <a class="item item-icon-left" href="#/home" menu-close ng-show='isLoggedIn' ng-click="logout()">
+	<i class="icon ion-log-out"></i>
+	Log out
+        </a>
+        <a class="item item-icon-right item-divider" ng-click="ExpandCategory('Grocery')">
+	<i class="icon ion-ios-arrow-down"></i>
+	Grocery
+        </a>
+        <a class="item item-icon-right" ui-sref="app.hotdeals" menu-close ng-show="showGrocery" ng-repeat="category in Grocery">
+	<span style="margin-left:15px;">{{category}}</span>
+        </a>
+        <a class="item item-icon-right item-divider" ng-click="ExpandCategory('Stationary')">
+	<i class="icon ion-ios-arrow-down"></i>
+	Stationary
+        </a>
+        <a class="item item-icon-right" ui-sref="app.hotdeals" menu-close ng-show="showStationary" ng-repeat="category in Stationary">
+	<span style="margin-left:15px;">{{category}}</span>
+        </a>
+        
+        <div class="item item-divider">
+        </div>
+        <a class="item item-icon-left" ui-sref="app.hotdeals" menu-close>
+	<i class="icon ion-ios-paper-outline"></i>
+	My Orders
+        </a>
+        <a class="item item-icon-left" ui-sref="app.microsite" menu-close>
+	<i class="icon ion-android-cart"></i>
+	Cart Checkout
+        </a>
+        
+        <a class="item item-icon-left" ui-sref="app.settings" menu-close>
+	<i class="icon ion-gear-a"></i>
+	Settings
+        </a>
+        <a class="item item-icon-left" menu-close>
+	<i class="icon ion-ios-people"></i>
+	Contact Us
+        </a>
+        <a class="item item-icon-left" href="#/home" menu-close>
+	<i class="icon ion-ios-star"></i>
+	Feedback
+        </a>
+        
+        <a class="item item-icon-left" ui-sref="app.faq" menu-close>
+	<i class="icon ion-help-circled"></i>
+	FAQ
+        </a>
+        <a class="item item-icon-left" menu-close>
+	<i class="icon ion-android-star-half"></i>
+	Rate Us
+        </a>
+      </div>
+    </ion-content>
+    </ion-side-menu>
+    <ion-side-menu side="right" drag-content="false">
+    <ion-header-bar align-title="center" class="bar-dark">
+  <h1 class="title">My Cart!</h1>
+</ion-header-bar>
+    <ion-content>
+    <div class="row">
+      <div class="col" >
+      Items
+      </div>
+      <div class="col text-center ">
+      Qty
+      </div>
+      <div class="col text-right ">
+      Price
+      </div>
+    </div>
+    <hr>
+    <div ng-repeat="deal in deals">
+    <div class="row">
+      <div class="col" style="width:10%;">
+	Maggi noodles
+      </div>
+      <div class="col text-center">
+      <a class=" button button-dark button-outline button-small icon ion-minus" style="border: 2px solid #73AD21; float: left;"></a>
+      <input type="number" style="width: 30%;  border: 2px solid #73AD21;  float: left; margin-left:4px;" value=1>
+      <a class=" button button-dark button-outline button-small icon ion-plus" style="margin-left:4px; border: 2px solid #73AD21; float: left;"></a>
+      </div>
+      <div class="col text-right col-20">
+      Rs 100
+      </div>
+    </div>
+    <hr>
+    </div>
+    </ion-content>
+    <ion-footer-bar align-title="left" class="bar-dark">
+      <h1 class="title">Total: Rs 350</h1>
+    </ion-footer-bar>
+  </ion-side-menu>
+</ion-side-menus>

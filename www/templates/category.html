@@ -1,0 +1,49 @@
+<ion-view view-title="Category">
+   <ion-content has-header="true" style="background:#C0C0C0;">  
+      <div class="bar bar-header bar-dark">
+	<h1 class="title">{{categoryname}}</h1>
+      </div>
+<!--       <h2>Deals of the Day</h2> -->
+     <br><br>
+     <div class="card">
+     <div class="item item-divider" style="text-shadow: 0 0 3px #FF0000; ">Hot Deals</div>
+      <ion-scroll direction="x" style="height:140px;">
+      <a class="item item-thumbnail-left inline" href="#" collection-repeat="deal in deals" style="border-radius: 10px; border: 2px solid #73AD21; margin-top: 0.3em; ">
+      <img src="{{deal.imageurl}}">
+      
+      
+    </a>
+    <ion-infinite-scroll on-infinite="loadMore()" distance="1%">
+  </ion-infinite-scroll>
+    </ion-scroll>
+    </div>
+    <div class="card">
+    <div class="item item-divider" style="text-shadow: 0 0 3px #FF0000;">Recommended Items</div>
+    <ion-scroll direction="y" style="height:150px;">
+      <a class="item item-thumbnail-left" href="#" collection-repeat="deal in deals" style="border-radius: 10px; border: 2px solid #73AD21;">
+      <img src="{{deal.imageurl}}">
+      <h2 style="white-space:normal;">Title: itm.title</h2>
+      <p style="white-space:normal;">Description: itm.description<br>
+      Price: itm.price
+      </p>
+      <button class="icon-right ion-android-cart button button-small button-balanced">
+      Add to Cart
+      </button>
+    </a>
+    <ion-infinite-scroll on-infinite="loadMore()" distance="1%">
+  </ion-infinite-scroll>
+    </ion-scroll>
+    </div>
+    <div class="list card">
+
+      <div class="item item-divider" style="text-shadow: 0 0 3px #FF0000;">
+	Sub Categories
+      </div>
+
+      <a class="item" href="#" ng-repeat="category in categories" ng-click="viewSubCategory($index)">
+	<b>{{category}}</b>
+      </a>
+    </div>
+   </ion-content>
+      
+</ion-view>

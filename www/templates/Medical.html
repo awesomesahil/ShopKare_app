@@ -1,0 +1,59 @@
+<ion-view view-title="Register">
+  <ion-content has-header="true" style="background-image:url('img/white-wood.jpg');"> 
+       <div class="item" style="border-width: 3px; border-style: dashed; border-color: black;">
+       <center><h2><b>Capture or add doctor's perscription</b></h2></center>
+       <ion-scroll direction="x" style="height:125px;">
+       <span class="inline" collection-repeat="img in images">
+	<img ng-src="{{img}}" style="height:100px; width:100px; border-radius: 15px;" class="block">
+	<img ng-src="img/remove.png" style="height:20px; width:100px; border-radius: 25px;" ng-click="removeimage({{$index}})"></i>
+       &nbsp;
+       </span>
+       
+       <span >
+	<img src="img/camera-plus.png" ng-click="openPopover($event)" height=100px width=100px style="margin-bottom: 1.25em;">
+	</span>
+    </ion-scroll>
+    
+    </div>
+       <form ng-model="form1">
+                <div class="list">
+                    <label class="item item-input">
+                        <span class="input-label">Perscription number</span>
+                        <input type="text" ng-model="product.name" placeholder="O1122SA">
+                    </label>
+                    <label class="item item-input">
+                        <span class="input-label">Description</span>
+                        <input type="text" ng-model="product.description" placeholder="13 Megapixel Camera Model D550...">
+                    </label>
+                    <label class="item item-input">
+                        <span class="input-label">Doctor name</span>
+                        <input type="text" ng-model="product.actualprice" placeholder="Ram Singh">
+                    </label>
+                    
+                    
+                    <ion-checkbox ng-model="agreement"><span class="input-label">Accept all the terms and conditions.*</span></ion-checkbox>
+                    <div class="meter animate text-center" ng-if="uploading">
+		      <span style="width: {{uploadProgress}}%">Image {{currentimage}}/{{totalimages}}&nbsp; {{uploadProgress}}% uploaded<span></span></span>
+		    </div>
+                    <label class="item">
+                        <button class="button button-block button-assertive" ng-click="register()" ng-disabled="!product.name || !product.category || !product.description || !product.actualprice || !product.dayrent || !product.weekrent || !product.hourrent || !agreement || !images.length" ng-if="!uploading" type="submit" type="submit">Register</button>
+                    </label>
+                </div>
+            </form>
+            
+      </ion-content>
+</ion-view>
+<script id="my-popover.html" type="text/ng-template">
+  <ion-popover-view style="height:19%;">
+  <ion-content>
+  <div class="item item-icon-left" ng-click="optionClicked(1)">
+	<i class="icon ion-images"></i>
+	Select from Gallery
+  </div>
+  <div class="item item-icon-left" ng-click="optionClicked(2)">
+    <i class="icon ion-ios-camera-outline"></i>
+    Take a Picture
+  </div>
+  </ion-content>
+  </ion-popover-view>
+</script>

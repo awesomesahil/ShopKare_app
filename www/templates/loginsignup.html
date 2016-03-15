@@ -1,0 +1,59 @@
+<ion-view view-title="Home">
+  <ion-content has-header="true" style="background-image:url('img/loginbackgroung.jpg'); -webkit-background-size: cover; background-size: cover; -moz-background-size: cover;"> 
+  <button class="button  button-outline" style="border-radius: 10px; color:white; font-size:1.5em; border: 2px solid #fff;" ng-hide="showLogin" ng-click="showSignup()">Login</button>
+  <br>
+  <center>
+  <img class="" src="img/login.jpg" class="image-full" height=100px>
+  <!--<h2 style="font-weight:900; font-size:3.0em; color:white;">ShopKare</h2>-->
+  
+  <h3 style="font-weight:900; font-size:1.5em; color:white; ">Get all what you need</h3>
+  </center>
+<!--   <img class="full-image" src="img/cleared.png"> -->
+  <br>
+  
+  <div style="margin-left:4px; margin-right:4px;" ng-show="showLogin">
+    <label class="item item-input" style="font-weight:900; font-size:1.5em; background-image:url('img/login.jpg'); border-radius: 10px; border: 2px solid #fff;">
+      <span class="input-label" style="font-weight:900; font-size:1.0em; color:white; "><i class="icon ion-person"></i>&nbsp;Email: </span>
+      <input type="email" ng-model="user.Email" style="font-weight:900; font-size:1.0em; color:white;">
+    </label>
+    <label class="item item-input" style="font-weight:900; font-size:1.5em; background-image:url('img/login.jpg'); border-radius: 10px; border: 2px solid #fff;">
+      <span class="input-label" style="font-weight:900; font-size:1.0em; color:white; "><i class="icon ion-android-lock"></i>&nbsp;Password: </span>
+      <input type="password" ng-model="user.Password" style="font-weight:900; font-size:1.0em; color:white;">
+    </label>
+    <center>
+    <button class="button  button-outline" style="border-radius: 10px; color:white; font-size:1.5em; margin-top:15px; margin-left:30%; border: 2px solid #fff;" ng-disabled="!user.Email || !user.Password" ng-click="Login()">
+  Login
+</button>
+<button class="button  button-outline" style="border-radius: 10px; color:white; font-size:0.9em; margin-top:15px; border: 0px solid #fff;">
+  OR
+</button>
+
+  <button class="button  button-outline" style="border-radius: 10px; color:white; font-size:1.5em; margin-top:15px; border: 2px solid #fff;" ng-click="showSignup()">
+  Signup
+</button></center>
+  </div>
+  
+  <div style="margin-left:4px; margin-right:4px;" ng-hide="showLogin">
+    <span style="font-weight:900; font-size:1.4em; color:white; ">New Account Registeration: </span>
+    <label class="item item-input" style="font-weight:900; font-size:1.5em; background-image:url('img/login.jpg'); border-radius: 10px; border: 1.5px solid #73AD21;">
+      <span class="input-label" style="font-weight:900; font-size:1.0em; color:white; "><i class="icon ion-android-lock"></i>&nbsp;Name: </span>
+      <input type="text" ng-model="signupuser.Name" style="font-weight:900; font-size:1.0em; color:white;">
+    </label>
+    <label class="item item-input" style="font-weight:900; font-size:1.5em; background-image:url('img/login.jpg'); border-radius: 10px; border: 1.5px solid #73AD21;">
+      <span class="input-label" style="font-weight:900; font-size:1.0em; color:white; "><i class="icon ion-android-lock"></i>&nbsp;Mobile: </span>
+      <input type="number" ng-model="signupuser.Mobile" style="font-weight:900; font-size:1.0em; color:white;">
+    </label>
+    <label class="item item-input" style="font-weight:900; font-size:1.5em; background-image:url('img/login.jpg'); border-radius: 10px; border: 1.5px solid #73AD21;">
+      <span class="input-label" style="font-weight:900; font-size:1.0em; color:white; "><i class="icon ion-person"></i>&nbsp;Email: </span>
+      <input type="email" ng-model="signupuser.Email" style="font-weight:900; font-size:1.0em; color:white;">
+    </label>
+    <label class="item item-input" style="font-weight:900; font-size:1.5em; background-image:url('img/login.jpg'); border-radius: 10px; border: 1.5px solid #73AD21;">
+      <span class="input-label" style="font-weight:900; font-size:1.0em; color:white; "><i class="icon ion-android-lock"></i>&nbsp;Password: </span>
+      <input type="password" ng-model="signupuser.Password" style="font-weight:900; font-size:1.0em; color:white;">
+    </label>
+    <button class="button  button-outline" style="border-radius: 10px; color:white; font-size:1.5em; margin-top:15px; margin-left:30%; border: 2px solid #fff;" ng-disabled='!signupuser.Name || !signupuser.Mobile || !signupuser.Email || !signupuser.Password' ng-click="Signup()">
+  Signup
+</button>
+  </div>
+</ion-content>
+</ion-view>
