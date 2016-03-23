@@ -1,0 +1,72 @@
+<ion-view view-title="Courier">
+  <ion-content has-header="true" style="background-image:url('img/white-wood.jpg');"> 
+       <div class="item" style="border-width: 3px; border-style: dashed; border-color: black;">
+       <center><h2><b>Enter Courier Details</b></h2></center>
+    
+    </div>
+       <form ng-model="form1">
+                <div class="list">
+		    <label class="item item-input">
+                        <span class="input-label">Name</span>
+                        <input type="text" ng-model="courier.name" placeholder="Feyanshu">
+                    </label>
+                    <label class="item item-input">
+                        <span class="input-label">Mobile</span>
+                        <input type="number" ng-model="courier.mobile" placeholder="9988776655">
+                    </label>
+                    <label class="item item-input">
+                        <span class="input-label">Items*</span>
+                        <input type="text" ng-model="courier.items" placeholder="100kg Bag, 1 suitcase">
+                    </label>
+                    <div class="card">
+                    <label class="item item-input">
+                        <span class="input-label">Pickup Address*</span>
+                        <input type="text" ng-model="courier.source.address" placeholder="Ram Singh">
+                    </label>
+                    <label class="item item-input">
+                        <span class="input-label">Pickup City*</span>
+                        <input type="text" ng-model="courier.source.city" placeholder="Ram Singh">
+                    </label>
+                    <label class="item item-input">
+                        <span class="input-label">Pickup state*</span>
+                        <input type="text" ng-model="courier.source.state" placeholder="Ram Singh">
+                    </label>
+                    </div>
+                    <div class="card">
+                    <label class="item item-input">
+                        <span class="input-label">Destination Address*</span>
+                        <input type="text" ng-model="courier.destination.address" placeholder="Ram Singh">
+                    </label>
+                    <label class="item item-input">
+                        <span class="input-label">Destination City*</span>
+                        <input type="text" ng-model="courier.destination.city" placeholder="Ram Singh">
+                    </label>
+                    <label class="item item-input">
+                        <span class="input-label">Destination State*</span>
+                        <input type="text" ng-model="courier.destination.state" placeholder="Ram Singh">
+                    </label>
+                    </div>
+                    <label class="item item-input">
+                        <span class="input-label">Pickup Date*</span>
+                        <input type="date" ng-model="courier.date" placeholder="">
+                    </label>
+                    <label class="item item-input">
+                        <span class="input-label">Total Weight*</span>
+                        <input type="text" ng-model="courier.weight" placeholder="100 KG">
+                    </label>
+                    <label class="item item-input">
+                        <span class="input-label">Remarks</span>
+                        <input type="text" ng-model="courier.remarks" placeholder="Any Suggestions">
+                    </label>
+                    <span class="item text-center">
+                        <a href=''>View basic courier charges</a>
+                    </span>
+                    <ion-checkbox ng-model="agreement"><span class="input-label">Accept all the terms and conditions.*</span></ion-checkbox>
+                    <label class="item">
+                        <button class="button button-block button-assertive" ng-click="Confirm()" ng-disabled="!courier.items || !courier.source.address || !courier.source.city || !courier.source.state || !courier.destination.address || !courier.destination.city || !courier.destination.state || !courier.name || !courier.mobile || !agreement || !courier.date || !courier.weight" type="submit" type="submit">Confirm Order</button>
+                    </label>
+                </div>
+            </form>
+            
+      </ion-content>
+</ion-view>

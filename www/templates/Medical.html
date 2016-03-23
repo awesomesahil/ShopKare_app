@@ -9,7 +9,7 @@
        &nbsp;
        </span>
        
-       <span >
+       <span ng-if="images.length<2">
 	<img src="img/camera-plus.png" ng-click="openPopover($event)" height=100px width=100px style="margin-bottom: 1.25em;">
 	</span>
     </ion-scroll>
@@ -29,7 +29,10 @@
                         <span class="input-label">Doctor name</span>
                         <input type="text" ng-model="product.actualprice" placeholder="Ram Singh">
                     </label>
-                    
+                    <label class="item item-input">
+                        <span class="input-label">Date</span>
+                        <input type="date" ng-model="product.actualprice" placeholder="">
+                    </label>
                     
                     <ion-checkbox ng-model="agreement"><span class="input-label">Accept all the terms and conditions.*</span></ion-checkbox>
                     <div class="meter animate text-center" ng-if="uploading">

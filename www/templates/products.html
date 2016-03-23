@@ -8,23 +8,23 @@
 		<div class="row" style="margin:0;">
 		    <div class="col" style="">
 		    Quantity
-		    <select  ng-change="updatePrice($index)" ng-model='$index' ng-options="Quant.Quantity[0] for Quant in product.Quantity[0].Quantities">
+		    <select  ng-model='index' ng-options="Quant.Quantity[0] for Quant in product.Quantity[0].Quantities">
 		    </select>
 		     </div>
 		    <div class="col text-right" style="">
 		      <font style="font-size:1.0em; color:purple;">
-		      Rs {{$index.Quantity[1]}}
+		      Rs {{index.Quantity[1]}}
 		      </font>
 		    </div>
 		</div>	
 	 <div class="row">
 	    <div class="col text-left">
-	      <a class=" button button-dark button-outline button-small icon ion-minus" style="border: 2px solid #73AD21; float: left;"></a>
-	      <input type="number" style="width: 30%;  border: 2px solid #73AD21;  float: left; margin-left:4px;" value=1>
-	      <a class=" button button-dark button-outline button-small icon ion-plus" style="margin-left:4px; border: 2px solid #73AD21; float: left;"></a>
+	      <a class=" button button-dark button-outline button-small icon ion-minus" style="border: 2px solid #73AD21; float: left;" ng-click="RemoveQuantity($index)"></a>
+	      <input type="number" ng-model="product.quantity" style="width: 35%;  border: 2px solid #73AD21;  float: left; margin-left:4px;" value=1>
+	      <a class=" button button-dark button-outline button-small icon ion-plus" style="margin-left:4px; border: 2px solid #73AD21; float: left;" ng-click="AddQuantity($index)"></a>
 	     </div>
 	  <div class="col text-right ">
-	  <button class="button button-dark button-small button-outline" ng-click='AddToCart($index)' style="border-radius: 20px; margin:0; padding:3px;">Add to Cart</button>
+	  <button class="button button-dark button-small button-outline" ng-click='AddToCart($index, index)' style="border-radius: 20px; margin:0; padding:3px;" ng-disabled="!index || !product.quantity">Add to Cart</button>
 	  </div>
 	 </div>
 	      

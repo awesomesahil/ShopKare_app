@@ -63,6 +63,15 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       }
     }
   })
+  .state('app.home.courier', {
+    url: '/courier',
+    views: {
+      'Courier': {
+        templateUrl: 'templates/Courier.html',
+	controller: 'Courier'
+      }
+    }
+  })
   .state('app.products', {
     url: '/products?level1Category&mainCategory&subcategory',
     views: {

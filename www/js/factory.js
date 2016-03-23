@@ -86,17 +86,25 @@ angular.module('Data.factory', [])
   return Products;
 }])
 
-.factory('CartFactory', ['$http', function($http){
+.factory('CartFactory', ['$http', 'LSFactory', function($http, LSFactory){
+  var cartKey='CartKey';
   var Items = {
     
-    addToCart: function(Items){
-      return $http.get('http://www.lenme.in/APIcart/?operation=store&products='+Items);
+    addToCart: function(products){
+	LSFactory.set(cartKey, products);
+      return 'Added';
     },
     
     getCartItems: function(){
-      return $http.get('http://www.lenme.in/APIcart/?operation=get');
-    }
+      return LSFactory.get(cartKey);
+    },
     
+    clearCart: function(){
+      LSFactory.delete(cartKey);
+    },
+    newCourierOrder: function(order){
+      return $http.post(base+'/api/Customer/NewCourierOrder/?order='+JSON.stringify(order));
+    }
     };
   return Items;
 }])
