@@ -4,42 +4,57 @@
 
   <center><b><span style="font-size:1.2em;">Popular </span><span style="font-size:1.2em; color:purple;">Categories</span></b></center>
   <ion-scroll direction="x" style="height:150px; white-space: nowrap;  width: 100vw;"  scrollbar-x="true">
-	<span class="inline" ng-click="selectSubCategory('Baby Products')">
+	<span class="inline" ng-click="selectSubCategory('Baby Products')" style="overflow:hidden; width:100px; margin:1px;">
 	<img ng-src="img/products/grocery/baby/babymain.jpg" style="height:115px; border: 2px solid #73AD21; width:100px; border-radius: 15px;" class="block">
 	Baby Products
        &nbsp;
        </span>
-       <span class="inline" ng-click="selectSubCategory('Cereals')">
+       <span class="inline" ng-click="selectSubCategory('Cereals and Spreads')" style="overflow:hidden; width:100px; margin:1px;">
 	<img ng-src="img/products/grocery/Cereals/Cereals.jpg" style="height:115px; border: 2px solid #73AD21; width:100px; border-radius: 15px;" class="block">
-	Cereals
+	Cereal, Spread
        &nbsp;
        </span>
 
-       <span class="inline" ng-click="selectSubCategory('Beverages and Drinks')">
+       <span class="inline" ng-click="selectSubCategory('Beverages and Drinks')" style="overflow:hidden; width:100px; margin:1px;">
 	<img ng-src="img/products/grocery/Beverages and Drinks/Beverages and Drinks.jpg" style="height:115px; border: 2px solid #73AD21; width:100px; border-radius: 15px;" class="block">
 	Beverages
        &nbsp;
        </span>
 
-       <span class="inline" ng-click="selectSubCategory('Snacks')">
+       <span class="inline" ng-click="selectSubCategory('Biscuits and Snacks')" style="overflow:hidden; width:100px; margin:1px;">
 	<img ng-src="img/products/grocery/Snacks/Snacks.jpg" style="height:115px; border: 2px solid #73AD21; width:100px; border-radius: 15px;" class="block">
-	Snacks
+	Biscuits, Snack
        &nbsp;
        </span>
 
-       <span class="inline" ng-click="selectSubCategory('Pulses and Grains')">
+       <span class="inline" ng-click="selectSubCategory('Staples')" style="overflow:hidden; width:100px; margin:1px;">
 	<img ng-src="img/products/grocery/Pulses and Grains/pulses.jpg" style="height:115px; border: 2px solid #73AD21; width:100px; border-radius: 15px;" class="block">
-	Pulses, Grains
+	Staples
        &nbsp;
        </span>
-       <span class="inline" ng-click="selectSubCategory('Flours')">
+       <span class="inline" ng-click="selectSubCategory('Pickles and Sauces')" style="overflow:hidden; width:100px; margin:1px;">
 	<img ng-src="img/products/grocery/Flours/Flours.jpg" style="height:115px; border: 2px solid #73AD21; width:100px; border-radius: 15px;" class="block">
-	Flour
+	Pickles, Sauces
        &nbsp;
        </span>
-       <span class="inline" ng-click="selectSubCategory('Household Cleaning')">
+       <span class="inline" ng-click="selectSubCategory('Home Care')" style="overflow:hidden; width:100px; margin:1px;">
+	<img ng-src="img/products/grocery/Flours/Flours.jpg" style="height:115px; border: 2px solid #73AD21; width:100px; border-radius: 15px;" class="block">
+	Home Care
+       &nbsp;
+       </span>
+       <span class="inline" ng-click="selectSubCategory('Personal Care')" style="overflow:hidden; width:100px; margin:1px;">
+	<img ng-src="img/products/grocery/Flours/Flours.jpg" style="height:115px; border: 2px solid #73AD21; width:100px; border-radius: 15px;" class="block">
+	Personal Care
+       &nbsp;
+       </span>
+       <span class="inline" ng-click="selectSubCategory('Chocolates and Candy')" style="overflow:hidden; width:100px; margin:1px;">
+	<img ng-src="img/products/grocery/Flours/Flours.jpg" style="height:115px; border: 2px solid #73AD21; width:100px; border-radius: 15px;" class="block">
+	Chocolate, Candy
+       &nbsp;
+       </span>
+       <span class="inline" ng-click="selectSubCategory('Cleaning and Hygiene')" style="overflow:hidden; width:100px; margin:1px;">
 	<img ng-src="img/products/grocery/Household Cleaning/Detergents.jpg" style="height:115px; border: 2px solid #73AD21; width:100px; border-radius: 15px;" class="block">
-	House Cleaning
+	Cleaning, Hygiene
        &nbsp;
        </span>
 
@@ -47,60 +62,52 @@
     </ion-scroll>
   <hr>
   <center><b><span style="font-size:1.2em;">Trending </span><span style="font-size:1.2em; color:purple;">Products</span> </b></center>
-  <ion-scroll direction="x" style="height:270px; white-space: nowrap;  width: 100vw;"  scrollbar-x="true">
-	<span class="inline" style=" border-right: thin dashed grey; padding:1px;" ng-repeat="product in products">
-	<div>Coke Can</div><br>
-	<img ng-src="img/products/coke.jpg" style="height:150px;" class="block">
+  <ion-scroll direction="x" style="height:270px; white-space: nowrap;"  scrollbar-x="true">
+	<span class="inline" style=" border-right: thin dashed grey; padding:1px; width:40%;" ng-repeat="product in trendingProducts">
+	<div style="overflow:hidden;" ng-click="viewTrendingProduct($index)">{{product.product_name}}</div><br>
+	<img ng-src="http://shopkare.com/{{product.images[0]}}" ng-click="viewTrendingProduct($index)" style="height:150px;  width:150px;" class="block">
 	<div class="row" style="margin:0;">
 		    <div class="col" style="">
-		      <select>
-		      <option value="volvo">1 Liter</option>
-		      <option value="saab">500 ML</option>
-		      <option value="opel">250 ML</option>
+		      <select  ng-model='index' ng-init="index=product.Quantity[0].Quantities[0]" ng-options="Quant[0] for Quant in product.Quantity[0].Quantities" style="">
 		    </select>
 		      
 		     </div>
 		    <div class="col text-right" style="">
 		      <font style="font-size:1.0em; color:purple;">
-		      Rs 110
+		      Rs {{index[1]}}
 		      </font>
 		      
 		    </div>
 	 </div>	
-	      <button class="button button-dark button-small button-full" style="border-radius: 29px; margin:0; padding:0;">Add to Cart
+	      <button class="button button-dark button-small button-full" style="border-radius: 29px; margin:0; padding:0;" ng-click='AddToTrendingCart($index, index)'>Add to Cart
 		      </button>
        &nbsp;&nbsp;
        </span>
-
     </ion-scroll>
     <hr>
     
   <center><b><span style="font-size:1.2em;">New </span><span style="font-size:1.2em; color:purple;">Releases</span> </b></center>
-  <ion-scroll direction="x" style="height:270px; white-space: nowrap;  width: 100vw;"  scrollbar-x="true">
-	<span class="inline" style=" border-right: thin dashed grey; padding:1px;" ui-sref="app.product" ng-repeat="product in products">
-	<div>Coke Can</div><br>
-	<img ng-src="img/products/Red.jpg" style="height:150px;" class="block">
+  <ion-scroll direction="x" style="height:270px; white-space: nowrap;"  scrollbar-x="true">
+	<span class="inline" style=" border-right: thin dashed grey; padding:1px; width:40%;" ng-repeat="product in newProducts">
+	<div style="overflow:hidden;" ng-click="viewNewReleaseProduct($index)">{{product.product_name}}</div><br>
+	<img ng-src="http://shopkare.com/{{product.images[0]}}" style="height:150px;  width:150px;" ng-click="viewNewReleaseProduct($index)" class="block">
 	<div class="row" style="margin:0;">
 		    <div class="col" style="">
-		      <select>
-		      <option value="volvo">1 Liter</option>
-		      <option value="saab">500 ML</option>
-		      <option value="opel">250 ML</option>
+		      <select  ng-model='index' ng-init="index=product.Quantity[0].Quantities[0]" ng-options="Quant[0] for Quant in product.Quantity[0].Quantities" style="">
 		    </select>
 		      
 		     </div>
 		    <div class="col text-right" style="">
 		      <font style="font-size:1.0em; color:purple;">
-		      Rs 110
+		      Rs {{index[1]}}
 		      </font>
 		      
 		    </div>
 	 </div>	
-	      <button class="button button-dark button-small button-full" style="border-radius: 29px; margin:0; padding:0;">Add to Cart
+	      <button class="button button-dark button-small button-full" style="border-radius: 29px; margin:0; padding:0;" ng-click='AddToNewReleasesCart($index, index)'>Add to Cart
 		      </button>
        &nbsp;&nbsp;
        </span>
-
     </ion-scroll>
   </ion-content>
 </ion-view>

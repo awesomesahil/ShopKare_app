@@ -12,23 +12,23 @@
   <br>
   
   <div style="margin-left:4px; margin-right:4px;" ng-show="showLogin">
-    <label class="item item-input" style="font-weight:900; font-size:1.5em; background-image:url('img/login.jpg'); border-radius: 10px; border: 2px solid #fff;">
+    <label class="item item-input button-small" style="font-weight:900; font-size:1.5em; background-image:url('img/login.jpg'); border-radius: 10px; border: 2px solid #fff;">
       <span class="input-label" style="font-weight:900; font-size:1.0em; color:white; "><i class="icon ion-person"></i>&nbsp;Email: </span>
       <input type="email" ng-model="user.Email" style="font-weight:900; font-size:1.0em; color:white;">
     </label>
-    <label class="item item-input" style="font-weight:900; font-size:1.5em; background-image:url('img/login.jpg'); border-radius: 10px; border: 2px solid #fff;">
+    <label class="item item-input button-small" style="font-weight:900; font-size:1.5em; background-image:url('img/login.jpg'); border-radius: 10px; border: 2px solid #fff;">
       <span class="input-label" style="font-weight:900; font-size:1.0em; color:white; "><i class="icon ion-android-lock"></i>&nbsp;Password: </span>
       <input type="password" ng-model="user.Password" style="font-weight:900; font-size:1.0em; color:white;">
     </label>
     <center>
-    <button class="button  button-outline" style="border-radius: 10px; color:white; font-size:1.5em; margin-top:15px; margin-left:30%; border: 2px solid #fff;" ng-disabled="!user.Email || !user.Password" ng-click="Login()">
+    <button class="button  button-outline button-small" style="border-radius: 10px; color:white; font-size:1.5em; margin-top:15px; margin-left:30%; border: 2px solid #fff;" ng-disabled="!user.Email || !user.Password" ng-click="Login()">
   Login
 </button>
-<button class="button  button-outline" style="border-radius: 10px; color:white; font-size:0.9em; margin-top:15px; border: 0px solid #fff;">
+<button class="button  button-outline button-small" style="border-radius: 10px; color:white; font-size:0.9em; margin-top:15px; border: 0px solid #fff;">
   OR
 </button>
 
-  <button class="button  button-outline" style="border-radius: 10px; color:white; font-size:1.5em; margin-top:15px; border: 2px solid #fff;" ng-click="showSignup()">
+  <button class="button  button-outline button-small" style="border-radius: 10px; color:white; font-size:1.5em; margin-top:15px; border: 2px solid #fff;" ng-click="showSignup()">
   Signup
 </button></center>
   </div>

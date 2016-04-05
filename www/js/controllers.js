@@ -1,49 +1,89 @@
 angular.module('starter.controllers', ['Data.factory'])
 
-.controller('AppCtrl',['$scope', '$state', '$ionicSideMenuDelegate', 'AuthFactory', 'UserFactory', 'Loader', 'CartFactory', function($scope, $state, $ionicSideMenuDelegate, AuthFactory, UserFactory, Loader, CartFactory) {
+.controller('AppCtrl',['$scope', '$state', '$ionicSideMenuDelegate', 'AuthFactory', 'UserFactory', 'Loader', 'CartFactory', 'Categories', function($scope, $state, $ionicSideMenuDelegate, AuthFactory, UserFactory, Loader, CartFactory, Categories) {
   $scope.isLoggedIn=AuthFactory.isLoggedIn();
   $ionicSideMenuDelegate.canDragContent(false);
   $scope.getCartItems = function()
   {
   $scope.items=[];
   $scope.totalammount=0;
-  var items = CartFactory.getCartItems();
-   if(items)
-   {
-    for (var i=0; i<items.length;i++)
-    {
-      console.log(JSON.stringify(items[i]));
-      $scope.items.push(items[i]);
-      $scope.totalammount = $scope.totalammount + $scope.items[i].Quantity*$scope.items[i].Price;
-    } 
-   }
-   else{
-     $scope.emptyCart='Sorry No products added. Start adding products';
-  }
+  CartFactory.getCartItems()
+  .success(function(response){
+    if (response == 'Unable to get cart items'){
+      Loader.toggleLoadingWithMessage(response,2000);
+    }
+    else{
+     for (var i=0; i<Object.keys(response).length;i++)
+     {
+       response[i].totalPrice = response[i].Price * response[i].Quantity; 
+       $scope.items.push(response[i]);
+        $scope.totalammount = $scope.totalammount + response[i].totalPrice;
+     }
+    }
+  })
+  .error(function(error){
+    console.log(error);
+  });
   };
   $scope.RemoveItem = function(index)
   {
-    $scope.items.splice(index,1);
-    CartFactory.clearCart();
-    CartFactory.addToCart($scope.items);
-    $scope.getCartItems();
+    CartFactory.removeCartItem($scope.items[index])
+    .success(function(response){
+      if (response == 'Removed from cart')
+      {
+	$scope.totalammount = $scope.totalammount - $scope.items[index].totalPrice;
+	$scope.items.splice(index,1);
+      }
+      Loader.toggleLoadingWithMessage(response,1000);
+    })
+    .error(function(error){
+      Loader.toggleLoadingWithMessage(error,1000);
+    });
+    
   };
   $scope.DecreaseQuantity = function(index)
   {
-    if($scope.items[index].Quantity)
+    if($scope.items[index].Quantity>0)
     {
-      $scope.items[index].Quantity = $scope.items[index].Quantity-1;
-      CartFactory.clearCart();
-      CartFactory.addToCart($scope.items);
-      $scope.getCartItems();
+      var product = $scope.items[index];
+      product.Quantity = $scope.items[index].Quantity-1;
+      CartFactory.addToCart(product)
+     .success(function(response){
+       if (response == 'Updated in cart')
+       {
+	 $scope.items[index].totalPrice = $scope.items[index].totalPrice - $scope.items[index].Price;
+	 $scope.totalammount = $scope.totalammount - $scope.items[index].Price;
+// 	 $scope.items[index].Quantity = $scope.items[index].Quantity-1;
+	 
+       }
+       Loader.toggleLoadingWithMessage(response,2000);
+    }).error(function(error){
+      Loader.toggleLoadingWithMessage('Unable to update. Please try after sometime',2000);
+      console.log(error);
+    });
+    }
+    else{
+      $scope.RemoveItem(index);
     }
   };
   $scope.IncreaseQuantity = function(index)
   {
-    $scope.items[index].Quantity = $scope.items[index].Quantity+1;
-    CartFactory.clearCart();
-    CartFactory.addToCart($scope.items);
-    $scope.getCartItems();
+    var product = $scope.items[index];
+    product.Quantity = $scope.items[index].Quantity+1;
+    CartFactory.addToCart(product)
+     .success(function(response){
+       if (response == 'Updated in cart')
+       {
+	 $scope.items[index].totalPrice = $scope.items[index].totalPrice + $scope.items[index].Price;
+	 $scope.totalammount = $scope.totalammount + $scope.items[index].Price;
+	 console.log($scope.items[index].Quantity);
+// 	 $scope.items[index].Quantity = $scope.items[index].Quantity + 1;
+       }
+       Loader.toggleLoadingWithMessage(response,2000);
+    }).error(function(error){
+      Loader.toggleLoadingWithMessage('Unable to update. Please try after sometime',2000);
+      console.log(error);
+    });
   };
   $scope.logout = function()
   {
@@ -61,6 +101,7 @@ angular.module('starter.controllers', ['Data.factory'])
       }
     })
     .error(function(err){
+      console.log(err);
       Loader.toggleLoadingWithMessage('Unable to Logout');
     });
   }
@@ -71,7 +112,7 @@ angular.module('starter.controllers', ['Data.factory'])
      });
   };
   
-  $scope.Grocery=["Baby Products","Cereals","Beverages and Drinks","Personal Care", 'Pulses and Grains', 'Flours', 'Household Cleaning', 'Snacks'];
+  $scope.Grocery=["Baby Products","Cereals and Spreads","Beverages and Drinks","Personal Care", 'Biscuits and Snacks', 'Chocolates and Candy', 'Cleaning and Hygiene', 'Staples', 'Pickles and Sauces', 'Home Care'];
   $scope.Stationary=["Staples","Pencils","Drafters","Pens"];
   $scope.ExpandCategory = function(category)
   {
@@ -86,27 +127,105 @@ angular.module('starter.controllers', ['Data.factory'])
       $scope.showStationary=true;
     }
   };
-}])
-
-.controller('Grocery',['$scope', '$state', 'Categories', function($scope, $state, Categories) {
-  console.log('Grocery');
-  $scope.category = function(category)
+  $scope.selectSubCategoryFromSideMenu=function(level1Category, maincategory)
   {
-    $state.go('app.category', {
-       categoryname: category
+    console.log('Sub');
+    $state.go('app.subcategory',{
+       level1Category:level1Category,
+       mainCategory:maincategory,
+       subCategory:JSON.stringify(Categories.getSubCategories('Grocery', maincategory))
      });
   };
-  $scope.products=[
+}])
+
+.controller('Grocery',['$scope', '$state', 'Categories', 'ProductFactory', 'CartFactory', 'Loader', function($scope, $state, Categories, ProductFactory, CartFactory, Loader) {
+  console.log('Grocery');
+  Loader.toggleLoadingWithMessage('Please wait while Products are being fetched',2000);
+  
+  ProductFactory.getRandomProducts('Grocery')
+  .success(function(resp){
+    if (Object.keys(resp).length == 0 )
+    {
+      Loader.toggleLoadingWithMessage('Sorry no Trending products are available',3000);
+    }
+    else{
+      $scope.trendingProducts=resp;
+    }
+  })
+  .error(function(error){
+    console.log(error);
+    Loader.toggleLoadingWithMessage('Unable to Fetch Products. Try again later');
+  });
+  $scope.viewTrendingProduct = function(index){
+    $state.go('app.product',{
+      product:JSON.stringify($scope.trendingProducts[index])
+    });
+  };
+  $scope.viewNewReleaseProduct = function(index){
+    $state.go('app.product',{
+      product:JSON.stringify($scope.newProducts[index])
+    });
+  };  
+  $scope.AddToNewReleasesCart = function(productindex, quantity)
   {
-    imageurl:'img/hotdeals1.jpg'
-  },
+    console.log('Add to cart');
+    var cityIndex = 0;
+      var product={
+        ProductID: $scope.trendingProducts[productindex]._id,
+	QuantityType: quantity[0],
+	QuantityIndex: $scope.trendingProducts[productindex].Quantity[cityIndex].Quantities.indexOf(quantity),
+	Price: quantity[1],
+	Quantity:1,
+	product_name: $scope.trendingProducts[productindex].product_name,
+	'Main Category': $scope.trendingProducts[productindex]['Main Category'],
+	'Sub Category': $scope.trendingProducts[productindex]['Sub Category'],
+	'Level1 Category': $scope.trendingProducts[productindex]['Level1 Category']
+     };
+     CartFactory.addToCart(product)
+     .success(function(response){
+       Loader.toggleLoadingWithMessage(response,2000);
+    }).error(function(error){
+      Loader.toggleLoadingWithMessage('Unable to add. Please try after sometime');
+      console.log(error);
+    });
+  };
+  $scope.AddToTrendingCart = function(productindex, quantity)
   {
-    imageurl:'img/hotdeals2.jpg'
-  },
-  {
-    imageurl:'img/hotdeals3.jpg'
-  }
-  ];
+    console.log('Add to cart');
+    var cityIndex = 0;
+      var product={
+        ProductID: $scope.trendingProducts[productindex]._id,
+	QuantityType: quantity[0],
+	QuantityIndex: $scope.trendingProducts[productindex].Quantity[cityIndex].Quantities.indexOf(quantity),
+	Price: quantity[1],
+	Quantity:1,
+	product_name: $scope.trendingProducts[productindex].product_name,
+	'Main Category': $scope.trendingProducts[productindex]['Main Category'],
+	'Sub Category': $scope.trendingProducts[productindex]['Sub Category'],
+	'Level1 Category': $scope.trendingProducts[productindex]['Level1 Category']
+     };
+     CartFactory.addToCart(product)
+     .success(function(response){
+       Loader.toggleLoadingWithMessage(response,2000);
+    }).error(function(error){
+      Loader.toggleLoadingWithMessage('Unable to add. Please try after sometime');
+      console.log(error);
+    });
+  };
+  ProductFactory.getRandomProducts('Grocery')
+  .success(function(resp){
+    if (Object.keys(resp).length == 0 )
+    {
+      Loader.toggleLoadingWithMessage('Sorry no new products are available',3000);
+    }
+    else{
+      $scope.newProducts=resp;
+    }
+  })
+  .error(function(error){
+    console.log(error);
+    Loader.toggleLoadingWithMessage('Unable to Fetch Products. Try again later');
+  });
   $scope.selectSubCategory = function(maincategory)
   {
      $state.go('app.subcategory',{
@@ -117,37 +236,117 @@ angular.module('starter.controllers', ['Data.factory'])
   };
 }])
 
-.controller('Category',['$scope', '$stateParams', '$state', function($scope, $stateParams, $state) {
-  $scope.categoryname=$stateParams.categoryname;
-  $scope.deals=[
-  {
-    imageurl:'img/hotdeals1.jpg'
-  },
-  {
-    imageurl:'img/hotdeals2.jpg'
-  },
-  {
-    imageurl:'img/hotdeals3.jpg'
-  },
-  {
-    imageurl:'img/hotdeals2.jpg'
-  },
-  {
-    imageurl:'img/hotdeals3.jpg'
-  }
-  ];
-  $scope.viewSubCategory = function(index)
-  {
-    $state.go('app.subcategory', {
-       categoryname: $stateParams.categoryname,
-       subcategory: $scope.categories[index]
-     });
-  };
-  $scope.categories=['Masala','Oats', 'Dals'];
+.controller('Checkout',['$scope', '$stateParams', '$state', 'CartFactory', 'Loader', function($scope, $stateParams, $state, CartFactory, Loader) {
+  console.log('Checkout page');
+  $scope.$on('$ionicView.enter', function(){
+  $scope.items=[];
+  $scope.totalammount=0;
+  CartFactory.getCartItems()
+  .success(function(response){
+    if (response == 'Unable to get cart items'){
+      Loader.toggleLoadingWithMessage(response,2000);
+    }
+    else{
+     for (var i=0; i<Object.keys(response).length;i++)
+     {
+       response[i].totalPrice = response[i].Price * response[i].Quantity; 
+       $scope.items.push(response[i]);
+        $scope.totalammount = $scope.totalammount + response[i].totalPrice;
+     }
+    }
+  })
+  .error(function(error){
+    console.log(error);
+  });
+  });
 }])
 
-.controller('subCategory',['$scope', '$stateParams', '$state', function($scope, $stateParams, $state) {
+.controller('subCategory',['$scope', '$stateParams', 'ProductFactory', 'CartFactory', 'Loader', '$state', function($scope, $stateParams, ProductFactory, CartFactory, Loader, $state) {
   $scope.MainCategory=$stateParams.mainCategory;
+  ProductFactory.getRandomMainCategoryProducts($stateParams.level1Category, $scope.MainCategory)
+  .success(function(resp){
+    if (Object.keys(resp).length == 0 )
+    {
+      Loader.toggleLoadingWithMessage('Sorry no Trending products are available',3000);
+    }
+    else{
+      $scope.trendingProducts=resp;
+    }
+  })
+  .error(function(error){
+    console.log(error);
+    Loader.toggleLoadingWithMessage('Unable to Fetch Products. Try again later');
+  });
+  $scope.viewTrendingProduct = function(index){
+    $state.go('app.product',{
+      product:JSON.stringify($scope.trendingProducts[index])
+    });
+  };
+  $scope.viewNewReleaseProduct = function(index){
+    $state.go('app.product',{
+      product:JSON.stringify($scope.newProducts[index])
+    });
+  };  
+  $scope.AddToNewReleasesCart = function(productindex, quantity)
+  {
+    console.log('Add to cart');
+    var cityIndex = 0;
+      var product={
+        ProductID: $scope.newProducts[productindex]._id,
+	QuantityType: quantity[0],
+	QuantityIndex: $scope.newProducts[productindex].Quantity[cityIndex].Quantities.indexOf(quantity),
+	Price: quantity[1],
+	Quantity:1,
+	product_name: $scope.newProducts[productindex].product_name,
+	'Main Category': $scope.newProducts[productindex]['Main Category'],
+	'Sub Category': $scope.newProducts[productindex]['Sub Category'],
+	'Level1 Category': $scope.newProducts[productindex]['Level1 Category']
+     };
+     CartFactory.addToCart(product)
+     .success(function(response){
+       Loader.toggleLoadingWithMessage(response,2000);
+    }).error(function(error){
+      Loader.toggleLoadingWithMessage('Unable to add. Please try after sometime');
+      console.log(error);
+    });
+  };
+  $scope.AddToTrendingCart = function(productindex, quantity)
+  {
+    console.log('Add to cart');
+    var cityIndex = 0;
+      var product={
+        ProductID: $scope.trendingProducts[productindex]._id,
+	QuantityType: quantity[0],
+	QuantityIndex: $scope.trendingProducts[productindex].Quantity[cityIndex].Quantities.indexOf(quantity),
+	Price: quantity[1],
+	Quantity:1,
+	product_name: $scope.trendingProducts[productindex].product_name,
+	'Main Category': $scope.trendingProducts[productindex]['Main Category'],
+	'Sub Category': $scope.trendingProducts[productindex]['Sub Category'],
+	'Level1 Category': $scope.trendingProducts[productindex]['Level1 Category']
+     };
+     CartFactory.addToCart(product)
+     .success(function(response){
+       Loader.toggleLoadingWithMessage(response,2000);
+    }).error(function(error){
+      Loader.toggleLoadingWithMessage('Unable to add. Please try after sometime');
+      console.log(error);
+    });
+  };
+  ProductFactory.getRandomMainCategoryProducts($stateParams.level1Category, $scope.MainCategory)
+  .success(function(resp){
+    if (Object.keys(resp).length == 0 )
+    {
+      Loader.toggleLoadingWithMessage('Sorry no new products are available',3000);
+    }
+    else{
+      $scope.newProducts=resp;
+    }
+  })
+  .error(function(error){
+    console.log(error);
+    Loader.toggleLoadingWithMessage('Unable to Fetch Products. Try again later');
+  });
   $scope.viewSubCategoryProducts = function(subcategory)
   {
     $state.go('app.products',{
@@ -157,23 +356,7 @@ angular.module('starter.controllers', ['Data.factory'])
     });
   };
   $scope.subcategories=JSON.parse($stateParams.subCategory);
-  $scope.deals=[
-  {
-    imageurl:'img/hotdeals1.jpg'
-  },
-  {
-    imageurl:'img/hotdeals2.jpg'
-  },
-  {
-    imageurl:'img/hotdeals3.jpg'
-  },
-  {
-    imageurl:'img/hotdeals2.jpg'
-  },
-  {
-    imageurl:'img/hotdeals3.jpg'
-  }
-  ];
+  
   $scope.viewSubCategory = function(index)
   {
     $state.go('app.subcategory', {
@@ -181,28 +364,50 @@ angular.module('starter.controllers', ['Data.factory'])
        subcategory: $scope.categories[index]
      });
   };
-  $scope.categories=['Masala','Oats', 'Dals'];
 }])
 
-.controller('Product',['$scope', '$stateParams', function($scope, $stateParams) {
-  $scope.items=[
+.controller('Product',['$scope', '$stateParams', 'CartFactory', 'Loader', function($scope, $stateParams, CartFactory, Loader) {
+  $scope.product = JSON.parse($stateParams.product);
+  $scope.cartProduct={
+        ProductID: $scope.product._id,
+	QuantityType: $scope.product.Quantity[0].Quantities[0][0],
+	QuantityIndex: 0,
+	Price: $scope.product.Quantity[0].Quantities[0][1],
+	Quantity:0,
+	product_name: $scope.product.product_name,
+	'Main Category': $scope.product['Main Category'],
+	'Sub Category': $scope.product['Sub Category'],
+	'Level1 Category': $scope.product['Level1 Category']
+     };
+  console.log(JSON.stringify($scope.cartProduct));
+  $scope.DecreaseQuantity = function()
   {
-    imageurl:'img/hotdeals1.jpg'
-  },
+    if($scope.cartProduct.Quantity)
+    {
+      $scope.cartProduct.Quantity = $scope.cartProduct.Quantity-1; 
+    }
+  };
+  $scope.IncreaseQuantity = function()
   {
-    imageurl:'img/hotdeals2.jpg'
-  },
+    $scope.cartProduct.Quantity = $scope.cartProduct.Quantity+1;
+  };
+  $scope.addToCart = function()
   {
-    imageurl:'img/hotdeals3.jpg'
-  },
+    CartFactory.addToCart($scope.cartProduct)
+     .success(function(response){
+       Loader.toggleLoadingWithMessage('"'+$scope.cartProduct.QuantityType+'" '+response,2000);
+    }).error(function(error){
+      Loader.toggleLoadingWithMessage('Unable to add. Please try after sometime');
+      console.log(error);
+    });
+  };
+  $scope.viewPrice = function(index)
   {
-    imageurl:'img/hotdeals2.jpg'
-  },
-  {
-    imageurl:'img/hotdeals3.jpg'
-  }
-  ];
-  
+    $scope.price = $scope.product.Quantity[0].Quantities[index][1];
+    $scope.cartProduct.QuantityType = $scope.product.Quantity[0].Quantities[index][0];
+    console.log(JSON.stringify($scope.cartProduct.QuantityType));
+  };
+  $scope.price = $scope.product.Quantity[0].Quantities[0][1];
   $scope.categories=['Masala','Oats', 'Dals'];
 }])
 
@@ -281,36 +486,34 @@ angular.module('starter.controllers', ['Data.factory'])
   
 }])
 
-.controller('Products',['$scope', '$stateParams', 'ProductFactory', 'Loader', 'CartFactory', function($scope, $stateParams, ProductFactory, Loader, CartFactory) {
+.controller('Products',['$scope', '$state', '$stateParams', 'ProductFactory', 'Loader', 'CartFactory', function($scope, $state,  $stateParams, ProductFactory, Loader, CartFactory) {
   $scope.products=[];
   $scope.AddToCart = function(productindex, quantity)
   {
     var cityIndex = 0;
-     console.log(JSON.stringify($scope.products[productindex]));
-     console.log(JSON.stringify($scope.products[productindex].Quantity[cityIndex].Quantities.indexOf(quantity)));
-     console.log(JSON.stringify(quantity));
       var product={
         ProductID: $scope.products[productindex]._id,
-	QuantityType: quantity.Quantity[0],
-	Price: quantity.Quantity[1],
-	Quantity:$scope.products[productindex].quantity,
+	QuantityType: quantity[0],
 	QuantityIndex: $scope.products[productindex].Quantity[cityIndex].Quantities.indexOf(quantity),
+	Price: quantity[1],
+	Quantity:$scope.products[productindex].quantity,
 	product_name: $scope.products[productindex].product_name,
 	'Main Category': $scope.products[productindex]['Main Category'],
 	'Sub Category': $scope.products[productindex]['Sub Category'],
 	'Level1 Category': $scope.products[productindex]['Level1 Category']
      };
-     if(CartFactory.getCartItems())
-     {
-      var CartItems = CartFactory.getCartItems();
-      CartItems.push(product);
-      CartFactory.clearCart();
-      CartFactory.addToCart(CartItems);
-      }
-      else{
-	CartFactory.addToCart(product);
-      }
-    Loader.toggleLoadingWithMessage('Added to Cart',1000);
+     CartFactory.addToCart(product)
+     .success(function(response){
+       Loader.toggleLoadingWithMessage(response,2000);
+    }).error(function(error){
+      Loader.toggleLoadingWithMessage('Unable to add. Please try after sometime');
+      console.log(error);
+    });
+  };
+  $scope.viewProduct = function(index){
+    $state.go('app.product',{
+      product:JSON.stringify($scope.products[index])
+    });
   };
   $scope.AddQuantity = function(index)
   {
@@ -326,7 +529,7 @@ angular.module('starter.controllers', ['Data.factory'])
     console.log(index);
   };
   $scope.quantity='';
-  ProductFactory.getProducts('Grocery', 'Cereals', 'Cornflakes')
+  ProductFactory.getProducts($stateParams.level1Category, $stateParams.mainCategory, $stateParams.subcategory)
   .success(function(reply){
     if (reply == 'Unable to Fetch')
     {
@@ -344,6 +547,82 @@ angular.module('starter.controllers', ['Data.factory'])
     Loader.toggleLoadingWithMessage('Unable to Fetch Products right now.');
   });
   $scope.subcategory = $stateParams.subcategory;
+  $scope.categories=['Masala','Oats', 'Dals'];
+}])
+
+.controller('Search',['$scope', '$state', 'ProductFactory', '$stateParams', 'Loader', 'CartFactory', function($scope, $state, ProductFactory, $stateParams, Loader, CartFactory) {
+  console.log('Search Controller');
+  $scope.products=[];
+  $scope.AddToCart = function(productindex, quantity)
+  {
+    var cityIndex = 0;
+      var product={
+        ProductID: $scope.products[productindex]._id,
+	QuantityType: quantity[0],
+	QuantityIndex: $scope.products[productindex].Quantity[cityIndex].Quantities.indexOf(quantity),
+	Price: quantity[1],
+	Quantity:$scope.products[productindex].quantity,
+	product_name: $scope.products[productindex].product_name,
+	'Main Category': $scope.products[productindex]['Main Category'],
+	'Sub Category': $scope.products[productindex]['Sub Category'],
+	'Level1 Category': $scope.products[productindex]['Level1 Category']
+     };
+     CartFactory.addToCart(product)
+     .success(function(response){
+       Loader.toggleLoadingWithMessage(response,2000);
+    }).error(function(error){
+      Loader.toggleLoadingWithMessage('Unable to add. Please try after sometime');
+      console.log(error);
+    });
+  };
+  $scope.viewProduct = function(index){
+    $state.go('app.product',{
+      product:JSON.stringify($scope.products[index])
+    });
+  };
+  $scope.AddQuantity = function(index)
+  {
+     $scope.products[index].quantity=$scope.products[index].quantity+1;
+  };
+  $scope.RemoveQuantity = function(index)
+  {
+    if($scope.products[index].quantity != 0) 
+    $scope.products[index].quantity=$scope.products[index].quantity-1;
+  };
+  $scope.SearchProduct= function(query)
+  {
+    console.log(query);
+     ProductFactory.searchProduct('Grocery',query)
+   .success(function(reply){
+     if (reply == 'Unable to Fetch')
+     {
+       Loader.toggleLoadingWithMessage('Sorry Unable to fetch Products right now.');
+     }
+     else{
+       $scope.products=[];
+       if (Object.keys(reply).length)
+       {
+	$scope.noresults=false;
+	 for (var i=0; i< Object.keys(reply).length; i++)
+	  {
+	    $scope.products.push(reply[i]);
+	    $scope.products[i].quantity=0;
+	  }
+	}
+	else{
+	  $scope.noresults=true;
+	}
+     }
+   })
+   .error(function(error){
+     Loader.toggleLoadingWithMessage('Unable to Fetch Products right now.');
+   });
+  }
+  $scope.updatePrice = function(index)
+  {
+    console.log(index);
+  };
+  $scope.quantity='';
   $scope.categories=['Masala','Oats', 'Dals'];
 }])
 

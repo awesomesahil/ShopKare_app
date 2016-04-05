@@ -1,8 +1,16 @@
-<ion-view view-title="{{subcategory}}">
-   <ion-content has-header="true" style="background-image:url('img/white-wood.jpg');">  
-       <ion-refresher pulling-text="Pull down to refresh...." on-refresh="RefreshProducts()">
-  </ion-refresher>    
-    <span class="item item-thumbnail-left" ng-repeat="product in products">
+<ion-view view-title="Search">
+   <ion-content has-header="true">  
+   <span class="item item-icon-right" href="#">
+   <form novalidate ng-submit="SearchProduct(searchquery)" class="simple-form">
+    <input type="text" ng-model='searchquery' placeholder="Search Products">
+    <i class="icon ion-search" ng-click="SearchProduct(searchquery)"></i>
+    </form>
+  </span>
+  <span style="color:purple; font-size:1.0em;" ng-if="noresults">
+    Sorry No Results found, Try Something else
+  </span>
+
+   <span class="item item-thumbnail-left" ng-repeat="product in products">
 	    <img ng-src="http://shopkare.com{{product.images[0]}}" ng-click="viewProduct($index)">
 	      <font font-size=1.5em color="seagreen" style="white-space:normal;" ng-click="viewProduct($index)">{{product.product_name}}</font><br>
 		<div class="row" style="margin:0;">

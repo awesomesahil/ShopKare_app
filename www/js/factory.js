@@ -1,5 +1,6 @@
-//var base ="http://www.shopkare.com/";
-var base ='http://0.0.0.0:5000';
+  var base ="http://www.shopkare.com";
+//   var base ='http://0.0.0.0:5000';
+
 angular.module('Data.factory', [])
 
 .factory('Loader',['$ionicLoading', '$timeout', function($ionicLoading, $timeout){
@@ -74,13 +75,14 @@ angular.module('Data.factory', [])
     getProducts: function(category, MainCategory, SubCategory){
        return $http.get(base + '/api/Product/getCategoryProducts/?level1Category='+category+'&MainCategory='+MainCategory+'&SubCategory='+SubCategory);
     },
-    
-    getProductImages: function(cid, pid, category){
-      return $http.get('http://www.lenme.in/api/productimages/?category='+category+'&pid='+pid+'&cid='+cid);
+    getRandomMainCategoryProducts: function(level1category, MainCategory){
+       return $http.get(base + '/api/Product/getRandomMainCategoryProducts/?level1category='+level1category+'&mainCategory='+MainCategory);
     },
-    
-    registerProduct: function (product){
-      return $http.post('http://www.lenme.in/APIproductregister/?product='+JSON.stringify(product));
+    getRandomProducts: function(level1category){
+       return $http.get(base + '/api/Product/getRandomProducts/?level1category='+level1category);
+    },
+    searchProduct: function (level1Category, query){
+      return $http.get(base+'/api/Product/searchProduct/?level1category='+level1Category+'&query='+query);
     }
     };
   return Products;
@@ -90,17 +92,16 @@ angular.module('Data.factory', [])
   var cartKey='CartKey';
   var Items = {
     
-    addToCart: function(products){
-	LSFactory.set(cartKey, products);
-      return 'Added';
+    addToCart: function(product){
+	return $http.post(base + '/api/Customer/addToCart/?cartItem='+JSON.stringify(product));
     },
     
     getCartItems: function(){
-      return LSFactory.get(cartKey);
+      return $http.post(base + '/api/Customer/getCartItems/');
     },
     
-    clearCart: function(){
-      LSFactory.delete(cartKey);
+    removeCartItem: function(product){
+      return $http.post(base + '/api/Customer/removeFromCart/?cartItem='+JSON.stringify(product));
     },
     newCourierOrder: function(order){
       return $http.post(base+'/api/Customer/NewCourierOrder/?order='+JSON.stringify(order));
@@ -112,62 +113,7 @@ angular.module('Data.factory', [])
 .factory('FaqFactory', [function(){
   var faq = {
     
-    getGeneralFaq: function(){
-     var generalfaq = [{
-      title: 'Q1. What is lenme?',
-      text: "Its all in the name. LEND ME. A platform where we allow users to lend their product at rents they decide, whilst allowing other users to rent items according to their own needs thus inculcating the habit of sharing and a step towards saving your resources. After all its all about saving money!"
-    },{
-      title: 'Q2. Is lenme a solution to my problem?',
-      text: "Let’s get realistic about this problem. If you need a product immediately you got two options. An e-commerce site + additional fast delivery charges. Borrow it from a friend and return it after use."
-    },{
-      title: 'Q3. How can I trust Lenme?',
-      text: "We cover our deal with a MOU. We give you the right to claim us in case of any damage to your product. The product served by us our Lenme verified. If any problems arise we will reach out to you in no time."
-    },{
-      title: 'Q4. Do I need to register before making any transaction?',
-      text: "Yes , upon registration you are entitled with your own dashboard  where you can manage your product as you require. We assure you that any information provided to us will not be shared with any third party unless you permit."
-    },{
-      title: 'Q5. When does it come to my city?',
-      text: "As soon as we start getting registrations from your city!!"
-  }];
-       return generalfaq;
-    },
     
-    getLenderFaq: function(){
-      var lenderfaq = [{
-      title: 'Q1. What do I have to do?',
-      text: "Just find a product which you think can fetch you some money. Upload your product with the rent value you want (refer to the guide for doing god business) , mark it active or dormant. We’ll contact you ASAP and figure out the estimate value of your product, certifying it as Lenme verified which attract more customers. Upon any future request we sign a MOU and pick your product, which is finally returned with all policies covered*."
-    },{
-      title: 'Q2. How do I select a rent value?',
-      text: "We suggest you a value to keep it as low as possible so that your product is picked more often. A projected value lenme promotes is around 1-2% of the M.R.P. , refer full lending guide for making a good move. At the end it all depends on you!!!"
-    },{
-      title: 'Q3. Will I get an initial security for my product?',
-      text: "A post-dated check which is 60% of the estimated value is provided for products estimated above 10000. Refer T&C for detailed instructions."
-    },{
-      title: 'Q4. When does my product appear?',
-      text: "After uploading your product we need 12 hrs. of scrutiny of any unwanted or malicious information."
-    },{
-      title: 'Q5. When does it come to my city?',
-      text: "As soon as we start getting registrations from your city!!0"
-  },{
-      title: "Q6. How do I decide my rent value for maximum transactions?",
-      text: "The rent value for a day must be 1% to 2% of the actual market value of the product."
-  }];
-      return lenderfaq;
-    },
-    
-    getBorrowerFaq: function (){
-      var borrowerfaq = [{
-      title: 'Q1.  Does the product that appears is same as what I get?',
-      text: "We try to as authentic as we can, but if there is any emergency we get back to you with the nearest possible solution."
-    },{
-      title: 'Q2. Do I have to give a security deposit?',
-      text: "For products valued above 10000 you are required to supply a refundable post-dated cheque. In case of any damage a repair amount is deducted from the value with the rent of days. See full T&C."
-    },{
-      title: 'Q3. How fast can I receive my product?',
-      text: "We guarantee you a delivery that is made within 2 Hrs ( see standards)."
-    }];
-      return borrowerfaq;
-    }
     };
   return faq;
 }])
@@ -217,19 +163,20 @@ angular.module('Data.factory', [])
   return AuthAPI;
 }])
 .factory('Categories', [function(){
-
   var  categories = {
     getSubCategories: function(level1category, mainCategory){
     var cat={ 
       'Grocery':{
-	'Baby Products': ['Diapers', 'Baby Creams', 'Baby Lotions', 'Baby Shampoo', 'Baby Powder', 'Baby Soap', 'Baby body wash', 'Baby Wipes', 'Baby Food'],
-	'Cereals':['Cornflakes', 'Oats', 'Muesli', 'Other Cereals'],
-	'Beverages and Drinks': ['Cold Drinks', 'Soda', 'Tea and Coffee', 'Health Drinks'],
-	'Personal Care': ['Oral Care'],
-	'Pulses and Grains':['Soya'],
-	'Flours':[],
-	'Household Cleaning':['Detergents'],
-	'Snacks':['Maggi and Noodles', 'Pasta']
+	"Baby Products" : [ "Baby Food", "Baby Hygiene", "Baby Care" ] ,
+	"Cereals and Spreads" : [ "Canned Food", "Jams and Honey", "Ready to Eat", "Cereals" ],
+	"Beverages and Drinks" : [ "Cold Drinks", "Tea and Coffee", "Health Drinks", "Other" ] ,
+	"Personal Care" : [ "Oral Care", "Hair Care", "Skin Care", "Hand and Body Wash", "Fragrances", "Feminine Needs", "Male Grooming" ],
+	 "Biscuits and Snacks" : [ "Chips and Namkeen", "Cookies", "Bakery Products", "Other" ],
+	"Chocolates and Candy" : [ "Candy", "Chocolates" ],
+	"Cleaning and Hygiene" : [ "Laundry", "Cleaning", "Pet Care", "Pest Control", "Air Freshners" ],
+	"Staples" : [ "Pulses and Grains", "Masala and Spices" ],
+	 "Pickles and Sauces" : [ "Pickles", "Sauces" ],
+	 "Home Care" : [ "Pooja Items" ]
      }
     };
       return cat[level1category][mainCategory];

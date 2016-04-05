@@ -81,6 +81,15 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       }
     }
   })
+  .state('app.search', {
+    url: '/search',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/search.html',
+	controller: 'Search'
+      }
+    }
+  })
   .state('app.subcategory', {
     url: '/subcategory?level1Category&mainCategory&subCategory',
     views: {
@@ -91,11 +100,20 @@ angular.module('starter', ['ionic', 'starter.controllers'])
     }
   })
   .state('app.product', {
-    url: '/product',
+    url: '/product?product',
     views: {
       'menuContent': {
         templateUrl: 'templates/product.html',
 	controller: 'Product'
+      }
+    }
+  })
+  .state('app.checkout', {
+    url: '/checkout',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/checkout.html',
+	controller: 'Checkout'
       }
     }
   })
