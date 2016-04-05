@@ -1,7 +1,6 @@
 <ion-view view-title="{{subcategory}}">
    <ion-content has-header="true" style="background-image:url('img/white-wood.jpg');">  
-       <ion-refresher pulling-text="Pull down to refresh...." on-refresh="RefreshProducts()">
-  </ion-refresher>    
+       
     <span class="item item-thumbnail-left" ng-repeat="product in products">
 	    <img ng-src="http://shopkare.com{{product.images[0]}}" ng-click="viewProduct($index)">
 	      <font font-size=1.5em color="seagreen" style="white-space:normal;" ng-click="viewProduct($index)">{{product.product_name}}</font><br>

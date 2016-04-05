@@ -642,7 +642,7 @@ angular.module('starter.controllers', ['Data.factory'])
   };
   $scope.Login = function()
   {
-//     Loader.toggleLoadingWithMessage('Login Successfull',1000);
+    Loader.toggleLoadingWithMessage('Signing in, please wait',2000);
     UserFactory.login(JSON.stringify($scope.user))
      .success(function(resp){
        if (resp=='Login Success')
