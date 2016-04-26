@@ -13,7 +13,7 @@
     Quantities
   </div>
   <div class="item item-text-wrap">
-    <a class="button dark " style="" ng-click='viewPrice($index)' ng-repeat="Quant in product.Quantity[0].Quantities">{{Quant[0]}}</a>
+    <a class="button dark " style="margin:2px;" ng-click='viewPrice($index)' ng-repeat="Quant in product.Quantity[0].Quantities">{{Quant[0]}}</a>
   </div>
 </div>
     <div class="row">
@@ -24,16 +24,14 @@
 		     </div>&nbsp;
 		     <div class="col" style="display:inline;">
 		     <a class=" button button-dark button-outline button-small icon ion-minus" style="border: 2px solid #73AD21; float: left;" ng-click="DecreaseQuantity()"></a>
+		     <form ng-submit="addToCart()">
 		      <input type="number" ng-model='cartProduct.Quantity' style="width: 30%;  border: 2px solid #73AD21;  float: left; margin-left:4px;" value={{cartProduct.Quantity}}>
+		      </form>
 		     <a class=" button button-dark button-outline button-small icon ion-plus" style="margin-left:4px; border: 2px solid #73AD21; float: left;" ng-click="IncreaseQuantity()"></a>
 
 		     </div>
 		    <div class="text-right" style="margin-right:10px;">
 		      <button class="button button-dark button-medium button-outline" style="border-radius: 29px;"><b>Rs {{price}}</b>
-		      </button>
-		    </div>
-		    <div class="text-right" style="margin-right:10px;">
-		      <button class="button button-dark button-medium " ng-disabled='!cartProduct.Quantity' style="border-radius: 29px;" ng-click="addToCart()"><b>Add</b>
 		      </button>
 		    </div>
     </div>

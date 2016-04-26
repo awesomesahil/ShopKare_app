@@ -34,13 +34,13 @@
     <div class="item item-divider text-right">
     Total Amount: Rs {{totalammount}}
     </div>
-    <label class="item item-input">
+     <div class="item item-input"> 
       <span class="input-label">Coupn Code</span>
-      <input type="text" ng-model='couponcode' placeholder='e.g FIRST100'>
-      <span class="input-label button button-royal button-outline" style="margin-right:1.5em;" ng-disabled="!couponcode">Apply</span>
-    </label>
-    <button class="button button-dark icon-right ion-chevron-right button-full">
-    Place order
+     <input type="text" placeholder='e.g FIRST100' ng-model="coupon">
+     <button class="input-label button button-royal button-outline" style="margin-right:1.5em;" ng-disabled="!coupon" ng-click="ApplyCoupon()" type="button">Apply</button>
+     </div> 
+    <button class="button button-dark icon-right ion-chevron-right button-full" ng-click="ConfirmOrder()">
+    Confirm order
     </button>
    </ion-content>
       

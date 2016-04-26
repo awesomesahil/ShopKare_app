@@ -26,33 +26,34 @@
 	<i class="icon ion-home"></i>
 	Home
         </a>
-        <a class="item item-icon-left" href="#/home" menu-close ng-hide="isLoggedIn">
+        <a class="item item-icon-left" menu-close ng-show="isLoggedIn" ui-sref="loginsignup">
 	<i class="icon ion-log-in"></i>
 	Log In
         </a>
-        <a class="item item-icon-left" href="#/home" menu-close ng-hide='isLoggedIn'>
+        <a class="item item-icon-left" menu-close ng-show='isLoggedIn' ui-sref="loginsignup">
 	<i class="icon ion-compose"></i>
 	Sign Up
         </a>
-        <a class="item item-icon-left" href="#/home" menu-close ng-show='isLoggedIn' ng-click="logout()">
+        <a class="item item-icon-left" menu-close ng-hide='isLoggedIn' ng-click="logout()">
 	<i class="icon ion-log-out"></i>
 	Log out
         </a>
         <a class="item item-icon-right item-divider" ng-click="ExpandCategory('Grocery')">
-	<i class="icon ion-ios-arrow-down"></i>
+	<i class="icon ion-plus-round" ng-hide="showGrocery"></i>
+	<i class="icon ion-minus" ng-show="showGrocery"></i>
 	Grocery
         </a>
         <a class="item item-icon-right" ng-click="selectSubCategoryFromSideMenu('Grocery','{{category}}')" ng-show="showGrocery" ng-repeat="category in Grocery" menu-close>
 	<span style="margin-left:15px;">{{category}}</span>
         </a>
-        <a class="item item-icon-right item-divider" ng-click="ExpandCategory('Stationary')">
+        <!--<a class="item item-icon-right item-divider" ng-click="ExpandCategory('Stationary')">
 	<i class="icon ion-ios-arrow-down"></i>
 	Stationary
         </a>
         <a class="item item-icon-right" menu-close ng-show="showStationary" ng-repeat="category in Stationary">
 	<span style="margin-left:15px;">{{category}}</span>
         </a>
-        
+        -->
         <a class="item item-icon-left" menu-close>
 	<i class="icon ion-ios-paper-outline"></i>
 	My Orders

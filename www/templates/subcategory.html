@@ -3,59 +3,70 @@
 <!--         <ion-content has-header="true" style="background-image:url('img/white-wood.jpg');"> -->
 
   <center><b><span style="font-size:1.2em;">Popular </span><span style="font-size:1.2em; color:purple;">Categories</span></b></center>
-  <ion-scroll direction="x" style="height:150px; white-space: nowrap;  width: 100vw;"  scrollbar-x="true">
-	<span class="inline" ng-click="viewSubCategoryProducts('{{subcategory}}')" ng-repeat="subcategory in subcategories" style="overflow:hidden; width:100px; margin:1px;">
-	<img ng-src="img/products/grocery/{{subcategory}}.jpg" style="height:115px; border: 2px solid #73AD21; width:100px; border-radius: 15px;" class="block">
-	{{subcategory}}
+  <ion-scroll direction="x" style="height:170px; white-space: nowrap;  width: 100vw;"  overflow-scroll="false">
+	<span class="inline" ng-click="viewSubCategoryProducts('{{subcategory}}')" ng-repeat="subcategory in subcategories" style="overflow:hidden;font-family: 'Open Sans', sans-serif; font-weight: 200; width:100px; margin:1px;">
+	<img ng-src="img/products/grocery/{{MainCategory}}/{{subcategory}}.jpg" style="height:115px; width:100px;" class="block">
+	<div style="overflow:hidden; white-space: normal; height:80px; font-family: 'Open Sans', sans-serif; width:100px; font-weight: 100; "><center>{{subcategory}}</center></div>
        &nbsp;
        </span>
     </ion-scroll>
   <hr>
   <center><b><span style="font-size:1.2em;">Trending </span><span style="font-size:1.2em; color:purple;">Products</span> </b></center>
-  <ion-scroll direction="x" style="height:270px; white-space: nowrap;"  scrollbar-x="true">
+  <ion-scroll direction="x" style="height:290px; white-space: nowrap;"  overflow-scroll="false">
 	<span class="inline" style=" border-right: thin dashed grey; padding:1px; width:40%;" ng-repeat="product in trendingProducts">
-	<div style="overflow:hidden;" ng-click="viewTrendingProduct($index)">{{product.product_name}}</div><br>
-	<img ng-src="http://shopkare.com/{{product.images[0]}}" ng-click="viewTrendingProduct($index)" style="height:150px;  width:150px;" class="block">
-	<div class="row" style="margin:0;">
-		    <div class="col" style="">
-		      <select  ng-model='index' ng-init="index=product.Quantity[0].Quantities[0]" ng-options="Quant[0] for Quant in product.Quantity[0].Quantities" style="">
+	
+	<img ng-src="http://shopkare.com/{{product.images[0]}}" ng-click="viewTrendingProduct($index)" style="height:120px;  width:150px; " class="block">
+	<div class="item-input" style="margin:0;">
+		      <select  ng-model='index' ng-init="index=product.Quantity[0].Quantities[0]" ng-options="Quant[0] for Quant in product.Quantity[0].Quantities" style="background: -webkit-linear-gradient(white, white); width:90%">
 		    </select>
-		      
-		     </div>
-		    <div class="col text-right" style="">
+&nbsp;
 		      <font style="font-size:1.0em; color:purple;">
 		      Rs {{index[1]}}
 		      </font>
-		      
-		    </div>
-	 </div>	
-	      <button class="button button-dark button-small button-full" style="border-radius: 29px; margin:0; padding:0;" ng-click='AddToTrendingCart($index, index)'>Add to Cart
-		      </button>
+	 </div>
+	 <div class="row">
+	 <div class="col text-left">
+	      <a class=" button button-dark button-outline button-small icon ion-minus" style="border: 2px solid #73AD21; float: left;" ng-click="DecreaseTrendingQuantity($index, index)"></a>
+	      <form ng-submit="AddToTrendingCart($index, index)">
+	      <input type="number" ng-model="product.quantity" ng-init='product.quantity=0' style="width: 34%;  border: 2px solid #73AD21;  float: left; margin-left:4px;" value=1>
+	      </form>
+	      <a class=" button button-dark button-outline button-small icon ion-plus" style="margin-left:4px; border: 2px solid #73AD21; float: left;" ng-click="IncreaseTrendingQuantity($index, index)"></a>
+	     </div>
+	     </div>
+	 <div style="overflow:hidden; white-space: normal; height:80px; font-family: 'Open Sans', sans-serif; width:100px; font-weight: 100; " ng-click="viewTrendingProduct($index)">{{product.product_name}}</div>
        &nbsp;&nbsp;
        </span>
     </ion-scroll>
     <hr>
     
   <center><b><span style="font-size:1.2em;">New </span><span style="font-size:1.2em; color:purple;">Releases</span> </b></center>
-  <ion-scroll direction="x" style="height:270px; white-space: nowrap;"  scrollbar-x="true">
+  <ion-scroll direction="x" style="height:290px; white-space: nowrap;"  overflow-scroll="false">
 	<span class="inline" style=" border-right: thin dashed grey; padding:1px; width:40%;" ng-repeat="product in newProducts">
-	<div style="overflow:hidden;" ng-click="viewNewReleaseProduct($index)">{{product.product_name}}</div><br>
-	<img ng-src="http://shopkare.com/{{product.images[0]}}" style="height:150px;  width:150px;" ng-click="viewNewReleaseProduct($index)" class="block">
-	<div class="row" style="margin:0;">
-		    <div class="col" style="">
-		      <select  ng-model='index' ng-init="index=product.Quantity[0].Quantities[0]" ng-options="Quant[0] for Quant in product.Quantity[0].Quantities" style="width:90%">
+	
+	<img ng-src="http://shopkare.com/{{product.images[0]}}" ng-click="viewNewReleaseProduct($index)" style="height:120px;  width:150px; " class="block">
+	<div class="item item-input" style="margin:0;">
+<!-- 		    <div class="col" style=""> -->
+		      <select  ng-model='index' ng-init="index=product.Quantity[0].Quantities[0]" ng-options="Quant[0] for Quant in product.Quantity[0].Quantities" style="background: -webkit-linear-gradient(white, white); width:90%">
 		    </select>
-		      
-		     </div>
-		    <div class="col text-right" style="">
+		      &nbsp;
+<!-- 		     </div> -->
+<!-- 		    <div class="col text-right" style=""> -->
 		      <font style="font-size:1.0em; color:purple;">
 		      Rs {{index[1]}}
 		      </font>
 		      
 		    </div>
-	 </div>	
-	      <button class="button button-dark button-small button-full" style="border-radius: 29px; margin:0; padding:0;" ng-click='AddToNewReleasesCart($index, index)'>Add to Cart
-		      </button>
+	 </div>
+	 <div class="row">
+	 <div class="col text-left">
+	      <a class=" button button-dark button-outline button-small icon ion-minus" style="border: 2px solid #73AD21; float: left;" ng-click="DecreaseNewQuantity($index, index)"></a>
+	      <form ng-submit="AddToNewReleasesCart($index, index)">
+	      <input type="number" ng-model="product.quantity" ng-init='product.quantity=0' style="width: 34%;  border: 2px solid #73AD21;  float: left; margin-left:4px;" value=1>
+	      </form>
+	      <a class=" button button-dark button-outline button-small icon ion-plus" style="margin-left:4px; border: 2px solid #73AD21; float: left;" ng-click="IncreaseNewQuantity($index, index)"></a>
+	     </div>
+	     </div>
+	 <div style="overflow:hidden; white-space: normal; height:80px; font-family: 'Open Sans', sans-serif; width:100px; font-weight: 100; " ng-click="viewNewReleaseProduct($index)">{{product.product_name}}</div>
        &nbsp;&nbsp;
        </span>
     </ion-scroll>

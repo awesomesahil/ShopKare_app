@@ -117,7 +117,16 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       }
     }
   })
+  .state('app.orderplacement', {
+    url: '/orderplacement?coupon',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/orderplacement.html',
+	controller: 'OrderPlacement'
+      }
+    }
+  })
   ;
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/loginsignup');
+  $urlRouterProvider.otherwise('/app/home/grocery');
 });

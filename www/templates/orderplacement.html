@@ -1,0 +1,36 @@
+<ion-view view-title="Checkout">
+   <ion-content has-header="true" style="">
+  <div class="item item-input item-stacked-label">
+    <span class="input-label">Name*</span>
+    <input type="text" placeholder="John" ng-model="user.Name" value=''>
+  </div>
+  <div class="item item-input item-stacked-label">
+    <span class="input-label">Email Name*</span>
+    <input type="email" placeholder="john@suhr.com" ng-model="user.Email" value=''>
+  </div>
+  <div class="item item-input item-stacked-label">
+    <span class="input-label">Mobile Number*</span>
+    <input type="number" placeholder="9988776655" ng-model="user.Mobile" value=''>
+  </div>
+  <div class="item item-input item-stacked-label">
+    <span class="input-label">Address*</span>
+    <input type="text" placeholder="Hitec City" ng-model="user.Address" value=''>
+  </div>
+  <div class="item item-input item-stacked-label">
+    <span class="input-label">City*</span>
+    <input type="text" placeholder="Hyderabad" ng-model="user.City" value=''>
+  </div>
+  <div class="item item-input item-stacked-label">
+    <span class="input-label">State*</span>
+    <input type="text" placeholder="Telangana" ng-model="user.State" value=''>
+  </div>
+  <div class="item item-input item-stacked-label">
+    <span class="input-label">Remarks</span>
+    <input type="text" placeholder="Comments of feedbacks" ng-model="user.remarks" value=''>
+  </div>
+    <button class="button button-dark icon-right ion-chevron-right button-full" ng-click="placeOrder()" ng-disabled="!user.Name || !user.Email || !user.Mobile || !user.Address || !user.City|| !user.State">
+    Place order
+    </button>
+   </ion-content>
+      
+</ion-view>
